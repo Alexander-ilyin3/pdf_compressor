@@ -16,6 +16,8 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 
+const initHandlers = require('./main/setHandlers.js')
+
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -130,3 +132,9 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) createWindow();
 });
+
+const { ipcMain } = require('electron')
+
+initHandlers(ipcMain)
+
+
