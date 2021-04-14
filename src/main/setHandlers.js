@@ -1,7 +1,9 @@
+const initialLoad = require('./initialLoad.js')
+
 function setUpHandlers(ipcMain) {
 
-  ipcMain.handle('perform-action', (event, ...args) => {
-    console.log(1)
+  ipcMain.handle('initialLoad', async (event, ...args) => {
+    return await initialLoad()
   })
 }
 

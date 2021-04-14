@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import icon from '../assets/icon.svg';
 // import './App.global.css';
 import MainPage from './frontend/components/mainPage/index.jsx'
-const { ipcRenderer } = require('electron')
+
 
 // function inv() {
 //   ipcRenderer.invoke('perform-action')

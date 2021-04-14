@@ -2,13 +2,22 @@ import React from 'react'
 import s from './styles/index.module.css'
 import FileLoadInput from './fileLoadInput.jsx'
 import { throws } from 'assert'
+const { ipcRenderer } = require('electron')
 
 class MainPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      pdfList: ['one','2222','three']
+      pdfList: []
     }
+  }
+
+  componentDidMount() {
+    ipcRenderer.invoke('initialLoad').then((response) => {
+      this.setState((state, props) => {
+        return { pdfList: response} 
+      })
+    })
   }
 
   showPdfList = () => {
@@ -20,7 +29,9 @@ class MainPage extends React.Component {
   }
 
   clearAll = () => {
-    this.setState({pdflist: []})
+    this.setState((state, props) => {
+      return { pdfList: []} 
+    })
     console.log(this.state.pdfList)
     // this.state.pdfList
   }
@@ -52,8 +63,6 @@ class MainPage extends React.Component {
       </div>
       </>)
   }
-  
-
 }
 
 export default MainPage
