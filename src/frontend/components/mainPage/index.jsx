@@ -8,49 +8,55 @@ class MainPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      pdfList: []
+      imgList: []
     }
   }
 
   componentDidMount() {
     ipcRenderer.invoke('initialLoad').then((response) => {
       this.setState((state, props) => {
-        return { pdfList: response} 
+        return { imgList: response}
       })
     })
   }
 
-  showPdfList = () => {
+  showimgList = () => {
     let layout = []
-    this.state.pdfList.forEach(pdfItem => {
-      layout.push(<li>{pdfItem}</li>)
+    this.state.imgList.forEach((imgItem, i) => {
+      layout.push(
+      <li key={i}>
+        <div>
+          {imgItem}
+        </div>
+      </li>
+      )
     })
     return layout
   }
 
   clearAll = () => {
     this.setState((state, props) => {
-      return { pdfList: []} 
+      return { imgList: []}
     })
-    console.log(this.state.pdfList)
-    // this.state.pdfList
+    console.log(this.state.imgList)
+    // this.state.imgList
   }
 
-  addPdfName = (fileName) => {
+  addimgName = (fileName) => {
     this.setState((state, props) => {
-      return { pdfList: [...state.pdfList, fileName]} 
+      return { imgList: [...state.imgList, fileName]}
     })
   }
-  // updatePdfList = () => {
-  //   this.setState({...pdfList, })
+  // updateimgList = () => {
+  //   this.setState({...imgList, })
   // }
 
   render() {
     return(<>
-      <div id={s.container}> 
-        <div id={s.pdfList}>
+      <div id={s.container}>
+        <div id={s.imgList}>
           <ul>
-            {this.showPdfList()}
+            {this.showimgList()}
           </ul>
         </div>
       </div>
@@ -59,7 +65,7 @@ class MainPage extends React.Component {
           <button onClick={this.clearAll}>Clear all</button>
           <button>Compress all</button>
         </div>
-        <FileLoadInput addPdfName={this.addPdfName}/>
+        <FileLoadInput addimgName={this.addimgName}/>
       </div>
       </>)
   }

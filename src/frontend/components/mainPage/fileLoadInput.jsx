@@ -9,22 +9,28 @@ class FileLoadInput extends React.Component {
   }
   handleSubmit = (event) => {
     event.preventDefault()
-    this.props.addPdfName(this.fileInput.current.files[0].name)
 
-    // console.log(
-    //   this.fileInput.current.files[0].name
-    // )
+    this.fileInput.current.files.forEach(imgObject => {
+      if ( checkIfImage(imgObject) ) {
+        this.props.addimgName(imgObject.name)
+
+      }
+    })
+    function checkIfImage(imgObject) {
+      console.log(imgObject)
+      return imgObject.type.startsWith('image/')
+    }
   }
-  
+
   render() {
-    return(<> 
+    return(<>
       <div className={s.input__wrapper}>
         <input type="file" name="file" id="input__file" className="input input__file" hidden ref={this.fileInput} multiple onChange={this.handleSubmit}/>
-        <label htmlFor="input__file">Choose your pdfs</label>
+        <label htmlFor="input__file">Choose your imgs</label>
       </div>
     </>)
   }
-  
+
 }
 
 export default FileLoadInput
