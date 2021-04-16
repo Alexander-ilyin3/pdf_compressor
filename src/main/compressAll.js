@@ -10,11 +10,14 @@ module.exports = async (imgArray) => {
         .metadata()
         .then((metadata) => {
           console.log({metadata})
+          const responseObject = {
+            oldWidth: metadata.width,
+            oldHeight: metadata.height
+          }
+
+          
+          
           if ( metadata && metadata.width > 1200 ) {
-            const responseObject = {
-              oldWidth: metadata.width,
-              oldHeight: metadata.height
-            }
 
              sharp(path)
               .resize(1200)
@@ -28,11 +31,9 @@ module.exports = async (imgArray) => {
                 }
                 rs()
               })
-          }
+          } else { response.push(responseObject); rs() }
         })
       })
-
-
     }
     // imgArray.forEach(imgObj => {
     //
