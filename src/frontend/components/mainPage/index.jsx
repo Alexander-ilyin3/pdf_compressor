@@ -20,13 +20,27 @@ class MainPage extends React.Component {
     })
   }
 
+  removeItem = (event) => {
+    const itemId = event.target.attributes.itemKey.value
+    console.log(itemId)
+    this.setState((state, props) => {
+    const stateArray = state.imgList
+    stateArray.splice(itemId, 1)
+      return { imgList: stateArray }
+    })
+  }
+
   showimgList = () => {
     let layout = []
     this.state.imgList.forEach((imgItem, i) => {
       layout.push(
       <li key={i}>
+        <div filePath={imgItem.path}>
+          {imgItem.name}
+          <button onClick={this.removeItem} itemKey={i}>X</button>
+        </div>
         <div>
-          {imgItem}
+
         </div>
       </li>
       )
@@ -38,8 +52,15 @@ class MainPage extends React.Component {
     this.setState((state, props) => {
       return { imgList: []}
     })
-    console.log(this.state.imgList)
-    // this.state.imgList
+  }
+
+  compressAll = () => {
+    ipcRenderer.invoke('compressAll').then((response) => {
+      console.log(response)
+      // this.setState((state, props) => {
+      //   return { imgList: response }
+      // })
+    })
   }
 
   addimgName = (fileName) => {
@@ -63,7 +84,7 @@ class MainPage extends React.Component {
       <div id={s.buttonSection}>
         <div id={s.topButtons}>
           <button onClick={this.clearAll}>Clear all</button>
-          <button>Compress all</button>
+          <button onClick={this.compressAll}>Compress all</button>
         </div>
         <FileLoadInput addimgName={this.addimgName}/>
       </div>

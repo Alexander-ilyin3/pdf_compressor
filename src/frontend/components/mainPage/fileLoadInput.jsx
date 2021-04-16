@@ -12,7 +12,7 @@ class FileLoadInput extends React.Component {
 
     this.fileInput.current.files.forEach(imgObject => {
       if ( checkIfImage(imgObject) ) {
-        this.props.addimgName(imgObject.name)
+        this.props.addimgName({name: imgObject.name, path: imgObject.path})
 
       }
     })
@@ -30,7 +30,6 @@ class FileLoadInput extends React.Component {
       </div>
     </>)
   }
-
 }
 
 export default FileLoadInput

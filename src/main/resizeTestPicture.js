@@ -1,10 +1,18 @@
 const sharp = require('sharp')
 
 module.exports = () => {
-  sharp('C:/Users/Qitpess/AppData/Roaming/npm-cache/_logs/2021-04-15T14_52_18_530Z-debug.log/37f86eee-5fef-4b80-a6e0-780ba420bdca.__CR0,0,1464,600_PT0_SX1464_V1___.jfif')
-  .toBuffer()
-  .then(isPicture => {
-    conssole.log({isPicture})
-    // 100 pixels wide, auto-scaled height
-  });
+  sharp('./testPicData/46dae512e375bee2664a025507da8795.jpg')
+  .metadata()
+  .then((metadata) => {
+    // console.log({metadata})
+    if ( metadata && metadata.width > 1200 ) {
+      return sharp('./testPicData/46dae512e375bee2664a025507da8795.jpg')
+        .resize(1200)
+        .png()
+        .toFile('./processedPictures/textpic.png', (err, info) => { 
+          console.log({err})
+          console.log({info})
+         })
+    }
+  })
 }
