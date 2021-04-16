@@ -35,9 +35,12 @@ class MainPage extends React.Component {
     this.state.imgList.forEach((imgItem, i) => {
       layout.push(
       <li key={i}>
-        <div filePath={imgItem.path}>
+        <div>
+
+        <div filepath={imgItem.path} className={s.divToProcessing}>
           {imgItem.name}
-          <button onClick={this.removeItem} itemKey={i}>X</button>
+        </div>
+          <button onClick={this.removeItem} itemKey={i} className={s.deleteOneButton}>X</button>
         </div>
         <div>
 
@@ -55,8 +58,9 @@ class MainPage extends React.Component {
   }
 
   compressAll = () => {
-    ipcRenderer.invoke('compressAll').then((response) => {
-      console.log(response)
+    console.log('this.state.imgList', this.state.imgList)
+    ipcRenderer.invoke('compressAll', this.state.imgList).then((responseText) => {
+      console.log({responseText})
       // this.setState((state, props) => {
       //   return { imgList: response }
       // })
@@ -75,12 +79,6 @@ class MainPage extends React.Component {
   render() {
     return(<>
       <div id={s.container}>
-        <div id={s.imgList}>
-          <ul>
-            {this.showimgList()}
-          </ul>
-        </div>
-      </div>
       <div id={s.buttonSection}>
         <div id={s.topButtons}>
           <button onClick={this.clearAll}>Clear all</button>
@@ -88,6 +86,13 @@ class MainPage extends React.Component {
         </div>
         <FileLoadInput addimgName={this.addimgName}/>
       </div>
+        {/* <div id={s.imgList}> */}
+          <ul>
+            {this.showimgList()}
+          </ul>
+        {/* </div> */}
+      </div>
+
       </>)
   }
 }

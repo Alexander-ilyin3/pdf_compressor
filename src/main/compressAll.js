@@ -1,23 +1,43 @@
 const sharp = require('sharp')
 
-module.exports = (imgArray) => {
-  return new Promise((rs,rj) => {
-    const { name, path } = imgArray //todo todo todo
+module.exports = async (imgArray) => {
+  return new Promise(async(rs,rj) => {
     const response = []
+    for await ( const imgItem of imgArray ) {
+      const { name, path } = imgItem
+      await new Promise((rs,rj) => {
+        sharp(path)
+        .metadata()
+        .then((metadata) => {
+          console.log({metadata})
+          if ( metadata && metadata.width > 1200 ) {
+            const responseObject = {
+              oldWidth: metadata.width,
+              oldHeight: metadata.height
+            }
 
-    sharp('./testPicData/46dae512e375bee2664a025507da8795.jpg')
-    .metadata()
-    .then((metadata) => {
-      // console.log({metadata})
-      if ( metadata && metadata.width > 1200 ) {
-        return sharp('./testPicData/46dae512e375bee2664a025507da8795.jpg')
-          .resize(1200)
-          .png()
-          .toFile('./processedPictures/textpic.png', (err, info) => { 
-            console.log({err})
-            console.log({info})
-           })
-      }
-    })
+             sharp(path)
+              .resize(1200)
+              .png()
+              .toFile('./processedPictures/' + name, (err, picinfo) => {
+                // console.log({err})
+                console.log('processing PIC')
+                // console.log({picinfo})
+                if ( picinfo ) {
+                  response.push({...responseObject, ...picinfo})
+                }
+                rs()
+              })
+          }
+        })
+      })
+
+
+    }
+    // imgArray.forEach(imgObj => {
+    //
+    // })
+    console.log('RETURN')
+    rs(response)
   })
 }

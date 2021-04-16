@@ -8,9 +8,10 @@ function setUpHandlers(ipcMain) {
     // resizeTestPicture()
     return await initialLoad()
   })
-  ipcMain.handle('compressAll', async (event, ...args) => {
+  ipcMain.handle('compressAll', async (event, args) => {
+    console.log({args})
     // resizeTestPicture()
-    return await compressAll(args)
+    return compressAll(args)
   })
 }
 
