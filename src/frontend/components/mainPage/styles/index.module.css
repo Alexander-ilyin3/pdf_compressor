@@ -53,28 +53,30 @@ li > div {
   text-overflow: ellipsis; */
   white-space: nowrap;
   justify-content: space-between;
+
 }
 
-/*-------------- TOOLTIPS ----------------*/
+/*------------------------------*/
 
 
+/*-----------------------------------------*/
 .tooltipwrapper {
   position: relative;
   display: inline-block;
 }
 
 .content {
-  background-color: #9999ff;
+  background-color: #9999FF;
   width: 50px;
   height: 50px;
 }
 
 .tooltip {
   z-index: 1;
-  background-color: #ff9999;
+  background-color: #FF9999;
   display: none;
   position: fixed;
-  transform: translate(50px, -50px);
+  transform:translate(50px,-50px);
   /*left: 100%;
   top: 0%;*/
   white-space: nowrap;
@@ -84,7 +86,6 @@ li > div {
   display: inline-block;
 }
 
-/*-----------------------------------------*/
 
 #buttonSection {
   /* background-color: #6aa68e; */
@@ -114,7 +115,7 @@ button {
   transition: 0.1s;
 }
 
-button[wasClicked='true'] {
+button[wasClicked="true"] {
   background-color: #ffffff;
 }
 

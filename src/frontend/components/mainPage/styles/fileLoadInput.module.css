@@ -16,6 +16,6 @@
   box-shadow: 0px 0px 5px 2px #ffffffa3;
 }
 
-.input__wrapper[wasClicked='true'] {
+.input__wrapper[wasClicked="true"] {
   background-color: #ffffff;
 }
