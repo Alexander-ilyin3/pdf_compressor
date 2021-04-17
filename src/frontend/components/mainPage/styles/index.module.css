@@ -1,8 +1,12 @@
+body {
+  background-color: #302e2e;
+}
+
 #container {
   display: flex;
   max-width: 100%;
   max-height: 100%;
-  background-color: #9da65a;
+  background-color: #302e2e;
   display: flex;
   flex-direction: column;
   /* align-items: center; */
@@ -10,22 +14,32 @@
 
 ul {
   margin: 0;
-  padding: 0;
+  padding: 5px;
   max-width: 100%;
+  border: 1px double #ffffff0c;
 }
 
 li {
   list-style: none;
   font-size: 26px;
-  border: 1px solid #a8a4a4;
-  padding: 2px 10px;
+  /* border: 1px solid #587fb5; */
+  /* border-bottom: none; */
+  padding: 0px 10px;
   color: #fff;
-  border-radius: 10px 30px 6px 20px;
-  margin: 2px 0;
+  border-radius: 3px 3px 3px 3px;
+  border-collapse: collapse;
+  margin: 0;
+  box-shadow: 0px 0px 5px 2px #ffc2004b;
 
   display: flex;
   flex-direction: raw;
-  min-width: 100%;
+  max-width: 100%;
+  transition: 0.1s;
+}
+
+button:hover {
+  /* transform: translateX(1px) ; */
+  box-shadow: 0px 0px 5px 2px #ffffffa3;
 }
 
 li>div {
@@ -38,14 +52,51 @@ li>div {
   /* overflow: hidden;
   text-overflow: ellipsis; */
   white-space: nowrap;
+  justify-content: space-between;
+
 }
 
+/*------------------------------*/
+
+
+/*-----------------------------------------*/
+.tooltipwrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.content {
+  background-color: #9999FF;
+  width: 50px;
+  height: 50px;
+}
+
+.tooltip {
+  z-index: 1;
+  background-color: #FF9999;
+  display: none;
+  position: fixed;
+  transform:translate(50px,-50px);
+  /*left: 100%;
+  top: 0%;*/
+  white-space: nowrap;
+}
+
+.tooltipwrapper:hover .tooltip {
+  display: inline-block;
+}
+
+
 #buttonSection {
-  background-color: #b3d46a;
+  /* background-color: #6aa68e; */
   display: flex;
-  width: fit-content;
+  max-width: fit-content;
   flex-direction: column;
   align-self: center;
+  margin-bottom: 10px;
+  box-shadow: inset 0px 0px 5px 2px #ffc2004b;
+  border-radius: 20px;
+
 }
 
 #topButtons {
@@ -54,13 +105,19 @@ li>div {
 }
 
 button {
-  background-color: #2347c0;
+  background-color: #443a3a;
   padding: 5px 10px;
   color: #fff;
   font-size: 20px;
   border: none;
   border-radius: 5px 5px 5px 5px;
   margin: 3px;
+  box-shadow: 0px 0px 5px 2px #ffc2004b;
+  transition: 0.1s;
+}
+
+button[wasClicked="true"] {
+  background-color: #ffffff;
 }
 
 #topButtons button:nth-child(1) { border-radius: 30px 10px 10px 6px; }
@@ -72,15 +129,18 @@ button:focus {
 
 .deleteOneButton {
   /* position: absolute; */
-  /* right: 5px; */
+  float: right;
   /* margin: 0; */
   padding: 1px 5px 0;
+  border-radius: 50%;
+  box-shadow: 0px 0px 5px 2px #ffc2004b;
+
 }
 
 .divToProcessing {
   /* max-width: 50%; */
-  background-color: #483737;
-  padding-right: 30px;
+  /* background-color: #483737; */
+  /* padding-right: 30px; */
   overflow: hidden;
   text-overflow: ellipsis;
 }

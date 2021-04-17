@@ -37,8 +37,9 @@ class MainPage extends React.Component {
       <li key={i}>
         <div>
 
-        <div filepath={imgItem.path} className={s.divToProcessing}>
+        <div filepath={imgItem.path} className={[s.divToProcessing, s.hastooltip].join(' ')} >
           {imgItem.name}
+          <div className={s.tooltipwrapper}><div className={s.tooltip}>{imgItem.name}</div></div>
         </div>
           <button onClick={this.removeItem} itemKey={i} className={s.deleteOneButton}>X</button>
         </div>
@@ -76,15 +77,28 @@ class MainPage extends React.Component {
   //   this.setState({...imgList, })
   // }
 
+  mouseDownAnimation = async (event) => {
+    let target;
+    if (event.target.htmlFor === "input__file") {
+      target = event.target.parentNode
+    } else {
+      target = event.target
+    }
+    target.setAttribute('wasClicked', 'true')
+    setTimeout(() => {
+      target.setAttribute('wasClicked', 'false')
+    }, 100);
+  }
+
   render() {
     return(<>
       <div id={s.container}>
       <div id={s.buttonSection}>
         <div id={s.topButtons}>
-          <button onClick={this.clearAll}>Clear all</button>
-          <button onClick={this.compressAll}>Compress all</button>
+          <button onClick={this.clearAll} onMouseDown={this.mouseDownAnimation}>Clear all</button>
+          <button onClick={this.compressAll} onMouseDown={this.mouseDownAnimation}>Compress all</button>
         </div>
-        <FileLoadInput addimgName={this.addimgName}/>
+        <FileLoadInput addimgName={this.addimgName} mouseDownAnimation={this.mouseDownAnimation}/>
       </div>
         {/* <div id={s.imgList}> */}
           <ul>

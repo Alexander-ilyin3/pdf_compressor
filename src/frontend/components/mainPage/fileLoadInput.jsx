@@ -24,8 +24,8 @@ class FileLoadInput extends React.Component {
 
   render() {
     return(<>
-      <div className={s.input__wrapper}>
-        <input type="file" name="file" id="input__file" className="input input__file" hidden ref={this.fileInput} multiple onChange={this.handleSubmit}/>
+      <div className={s.input__wrapper} onMouseDown={this.props.mouseDownAnimation}>
+        <input type="file" name="file" id="input__file" className="input input__file" hidden ref={this.fileInput} multiple onChange={this.handleSubmit} />
         <label htmlFor="input__file">Choose your imgs</label>
       </div>
     </>)
