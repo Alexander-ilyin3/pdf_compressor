@@ -33,6 +33,20 @@ class MainPage extends React.Component {
   showimgList = () => {
     let layout = []
     this.state.imgList.forEach((imgItem, i) => {
+      let responseText;
+      let color;
+      if ( imgItem.fromResponse && imgItem.fromResponse.errorDetails ) {
+        responseText = imgItem.fromResponse.errorDetails
+        color = '#ff1433'
+      } else if ( imgItem.fromResponse && imgItem.fromResponse.oldWidth && imgItem.fromResponse.oldWidth === imgItem.fromResponse.width ) {
+        responseText = 'Width - ' + imgItem.fromResponse.oldWidth + '. no need to compress'
+        color = '#afafaf'
+      } else if ( imgItem.fromResponse && imgItem.fromResponse.oldWidth && imgItem.fromResponse.oldWidth !== imgItem.fromResponse.width ) {
+        responseText = 'Ready'
+        color = '#1ee01e'
+      }
+
+
       layout.push(
       <li key={i}>
         <div>
@@ -43,17 +57,8 @@ class MainPage extends React.Component {
         </div>
           <button onClick={this.removeItem} itemKey={i} className={s.deleteOneButton}>X</button>
         </div>
-        <div className={s.divProcessed}>
-        {imgItem.fromResponse && imgItem.fromResponse.errorDetails ? imgItem.fromResponse.errorDetails : ''}
-        {
-          imgItem.fromResponse && imgItem.fromResponse.oldWidth && imgItem.fromResponse.oldWidth === imgItem.fromResponse.width ? 
-        'Width - ' + imgItem.fromResponse.oldWidth + '. no need to compress' : ''
-        }
-        {
-          imgItem.fromResponse && imgItem.fromResponse.oldWidth && imgItem.fromResponse.oldWidth !== imgItem.fromResponse.width ?
-          'Ready' : ''
-        }
-
+        <div className={s.divProcessed} style={{color: color}}>
+        { responseText }
         </div>
       </li>
       )
