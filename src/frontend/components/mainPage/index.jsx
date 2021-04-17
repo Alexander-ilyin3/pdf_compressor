@@ -43,7 +43,16 @@ class MainPage extends React.Component {
         </div>
           <button onClick={this.removeItem} itemKey={i} className={s.deleteOneButton}>X</button>
         </div>
-        <div>
+        <div className={s.divProcessed}>
+        {imgItem.fromResponse && imgItem.fromResponse.errorDetails ? imgItem.fromResponse.errorDetails : ''}
+        {
+          imgItem.fromResponse && imgItem.fromResponse.oldWidth && imgItem.fromResponse.oldWidth === imgItem.fromResponse.width ? 
+        'Width - ' + imgItem.fromResponse.oldWidth + '. no need to compress' : ''
+        }
+        {
+          imgItem.fromResponse && imgItem.fromResponse.oldWidth && imgItem.fromResponse.oldWidth !== imgItem.fromResponse.width ?
+          'Ready' : ''
+        }
 
         </div>
       </li>
@@ -60,12 +69,26 @@ class MainPage extends React.Component {
 
   compressAll = () => {
     console.log('this.state.imgList', this.state.imgList)
-    ipcRenderer.invoke('compressAll', this.state.imgList).then((responseText) => {
-      console.log({responseText})
+    ipcRenderer.invoke('compressAll', this.state.imgList).then((responseImgObj) => {
+      console.log({responseImgObj})
+      this.setState((state, props) => {
+        const changedState = processResponse(state.imgList, responseImgObj)
+        return changedState
+      })
+      setTimeout(() => {
+        console.log(this.state.imgList)
+      }, 2000);
       // this.setState((state, props) => {
       //   return { imgList: response }
       // })
     })
+
+    function processResponse(stateArray, responseImgObj) {
+      const mapped = stateArray.map((imgObj, i) => {
+        return {...imgObj, fromResponse: responseImgObj[i]}
+      })
+      return { imgList: mapped }
+    }
   }
 
   addimgName = (fileName) => {

@@ -55,9 +55,9 @@ li > div {
   justify-content: space-between;
 }
 
-/*------------------------------*/
+/*-------------- TOOLTIPS ----------------*/
 
-/*-----------------------------------------*/
+
 .tooltipwrapper {
   position: relative;
   display: inline-block;
@@ -83,6 +83,8 @@ li > div {
 .tooltipwrapper:hover .tooltip {
   display: inline-block;
 }
+
+/*-----------------------------------------*/
 
 #buttonSection {
   /* background-color: #6aa68e; */
@@ -136,7 +138,7 @@ button:focus {
   box-shadow: 0px 0px 5px 2px #ffc2004b;
 }
 
-.divToProcessing {
+.divToProcessing, .divProcessed {
   /* max-width: 50%; */
   /* background-color: #483737; */
   /* padding-right: 30px; */
