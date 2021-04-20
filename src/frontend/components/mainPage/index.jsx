@@ -1,7 +1,7 @@
 import React from 'react'
 import s from './styles/index.module.css'
 import FileLoadInput from './fileLoadInput.jsx'
-import { throws } from 'assert'
+import PicList from './picList'
 const { ipcRenderer } = require('electron')
 
 class MainPage extends React.Component {
@@ -20,50 +20,10 @@ class MainPage extends React.Component {
     })
   }
 
-  removeItem = (event) => {
-    const itemId = event.target.attributes.itemKey.value
-    console.log(itemId)
+  setParentState = (newState) => {
     this.setState((state, props) => {
-    const stateArray = state.imgList
-    stateArray.splice(itemId, 1)
-      return { imgList: stateArray }
+      return newState
     })
-  }
-
-  showimgList = () => {
-    let layout = []
-    this.state.imgList.forEach((imgItem, i) => {
-      let responseText;
-      let color;
-      if ( imgItem.fromResponse && imgItem.fromResponse.errorDetails ) {
-        responseText = imgItem.fromResponse.errorDetails
-        color = '#ff1433'
-      } else if ( imgItem.fromResponse && imgItem.fromResponse.oldWidth && imgItem.fromResponse.oldWidth === imgItem.fromResponse.width ) {
-        responseText = 'Width - ' + imgItem.fromResponse.oldWidth + '. no need to compress'
-        color = '#afafaf'
-      } else if ( imgItem.fromResponse && imgItem.fromResponse.oldWidth && imgItem.fromResponse.oldWidth !== imgItem.fromResponse.width ) {
-        responseText = 'Ready'
-        color = '#1ee01e'
-      }
-
-
-      layout.push(
-      <li key={i}>
-        <div>
-
-        <div filepath={imgItem.path} className={[s.divToProcessing, s.hastooltip].join(' ')} >
-          {imgItem.name}
-          <div className={s.tooltipwrapper}><div className={s.tooltip}>{imgItem.name}</div></div>
-        </div>
-          <button onClick={this.removeItem} itemKey={i} className={s.deleteOneButton}>X</button>
-        </div>
-        <div className={s.divProcessed} style={{color: color}}>
-        { responseText }
-        </div>
-      </li>
-      )
-    })
-    return layout
   }
 
   clearAll = () => {
@@ -129,9 +89,10 @@ class MainPage extends React.Component {
         <FileLoadInput addimgName={this.addimgName} mouseDownAnimation={this.mouseDownAnimation}/>
       </div>
         {/* <div id={s.imgList}> */}
-          <ul>
-            {this.showimgList()}
-          </ul>
+        <PicList imgList={this.state.imgList} setParentState={this.setParentState}/>
+          {/* <ul> */}
+            {/* {this.showimgList()} */}
+          {/* </ul> */}
         {/* </div> */}
       </div>
 
