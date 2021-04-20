@@ -7,7 +7,7 @@ class PicList extends React.Component {
     super(props)
     // this.layout = []
   }
-  
+
   removeItem = (event) => {
     const itemId = event.target.attributes.itemkey.value
     console.log(itemId)
@@ -15,12 +15,12 @@ class PicList extends React.Component {
     const stateArray = this.props.imgList
     stateArray.splice(itemId, 1)
     this.props.setParentState({ imgList: stateArray })
-      // return 
+      // return
     // })
   }
-  
-  prepeareColoring = (imgList, layout) => {
-    imgList.forEach((imgItem, i) => {
+
+  prepeareColoring = (imgList) => {
+    return imgList.map((imgItem, i) => {
       let responseText;
       let color;
       if ( imgItem.fromResponse && imgItem.fromResponse.errorDetails ) {
@@ -33,10 +33,10 @@ class PicList extends React.Component {
         responseText = 'Ready'
         color = '#1ee01e'
       }
-  
+
       // return { ...imgItem, responseText: responseText, color: color }
 
-      layout.push(
+      return (
       <li key={i}>
         <div>
         <div filepath={imgItem.path} className={[s.divToProcessing, s.hastooltip].join(' ')} >
@@ -54,11 +54,11 @@ class PicList extends React.Component {
   }
 
   render() {
-    const layout = []
-    this.prepeareColoring(this.props.imgList, layout)
+    // const layout = []
+
 
     return (<ul>
-      {layout}
+      {this.prepeareColoring(this.props.imgList)}
       </ul>)
   }
   // return layout
