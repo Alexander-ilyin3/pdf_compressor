@@ -10,7 +10,8 @@ class MainPage extends React.Component {
     super(props)
     this.state = {
       imgList: [],
-      confirmationWindow: false
+      confirmationWindow: false,
+      widthNumber: 1200
     }
   }
 
@@ -36,7 +37,7 @@ class MainPage extends React.Component {
 
   compressAll = () => {
     console.log('this.state.imgList', this.state.imgList)
-    ipcRenderer.invoke('compressAll', this.state.imgList).then((responseImgObj) => {
+    ipcRenderer.invoke('compressAll', [this.state.imgList, this.state.widthNumber]).then((responseImgObj) => {
       console.log({responseImgObj})
       this.setState((state, props) => {
         const changedState = processResponse(state.imgList, responseImgObj)
@@ -82,13 +83,19 @@ class MainPage extends React.Component {
     this.setState({confirmationWindow: false})
   }
 
+  inputChange = (e) => {
+    this.setState({widthNumber: e.target.value});
+  }
+
   render() {
     return(<>
       <div id={s.container}>
         <div id={s.topSection}>
           <div className={s.paragraphSection}>
-            lalala
-            <input type="text"/>
+            - How much width? <br />
+            - <input type="number" onChange={this.inputChange} value={this.state.widthNumber}/><br />
+            - Such much? <br />
+            - For whom how.
           </div>
           <div id={s.buttonSection}>
             <div id={s.topButtons}>

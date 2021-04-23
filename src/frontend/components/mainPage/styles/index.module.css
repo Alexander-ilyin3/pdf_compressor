@@ -96,12 +96,20 @@ li > div {
 
 #topSection .paragraphSection {
   width: calc(100% / 3);
-  background-color: red;
+  padding-left: 15px;
+  color: #fff;
 }
 
 .paragraphSection input {
   font-size: 14px;
   width: 2.5rem;
+  margin-left: 5px;
+}
+
+.paragraphSection input::-webkit-outer-spin-button,
+.paragraphSection input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */-webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
 #buttonSection {

@@ -1,10 +1,12 @@
 const sharp = require('sharp')
 
-module.exports = async (imgArray) => {
+module.exports = async (frontValues) => {
   return new Promise(async(rs,rj) => {
     const response = []
+    const imgArray = frontValues[0]
     for await ( const imgItem of imgArray ) {
       try {
+        const widthNumber = parseFloat(frontValues[1])
         const name = imgItem.name.match(/(.*)\./)[1]
         // console.log({name})
         const { path } = imgItem
@@ -20,8 +22,8 @@ module.exports = async (imgArray) => {
 
             let sharpObject
 
-            if ( metadata && metadata.width > 1200 ) {
-              sharpObject = sharp(path).resize(1200)
+            if ( metadata && metadata.width > widthNumber ) {
+              sharpObject = sharp(path).resize(widthNumber)
             } else {
               sharpObject = sharp(path)
             }
