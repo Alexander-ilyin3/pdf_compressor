@@ -2,13 +2,15 @@ import React from 'react'
 import s from './styles/index.module.css'
 import FileLoadInput from './fileLoadInput.jsx'
 import PicList from './picList'
+import ConfirmationWindow from './confirmationWindow'
 const { ipcRenderer } = require('electron')
 
 class MainPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      imgList: []
+      imgList: [],
+      confirmationWindow: false
     }
   }
 
@@ -28,7 +30,7 @@ class MainPage extends React.Component {
 
   clearAll = () => {
     this.setState((state, props) => {
-      return { imgList: []}
+      return { confirmationWindow: true }
     })
   }
 
@@ -43,9 +45,6 @@ class MainPage extends React.Component {
       setTimeout(() => {
         console.log(this.state.imgList)
       }, 2000);
-      // this.setState((state, props) => {
-      //   return { imgList: response }
-      // })
     })
 
     function processResponse(stateArray, responseImgObj) {
@@ -61,9 +60,6 @@ class MainPage extends React.Component {
       return { imgList: [...state.imgList, fileName]}
     })
   }
-  // updateimgList = () => {
-  //   this.setState({...imgList, })
-  // }
 
   mouseDownAnimation = async (event) => {
     let target;
@@ -78,24 +74,33 @@ class MainPage extends React.Component {
     }, 100);
   }
 
+  confirmationHandle = (event) => {
+    const value = event.target.attributes.value.value
+    if ( value ==='yes' ) {
+      this.setState({imgList: []})
+    }
+    this.setState({confirmationWindow: false})
+  }
+
   render() {
     return(<>
       <div id={s.container}>
-      <div id={s.buttonSection}>
-        <div id={s.topButtons}>
-          <button onClick={this.clearAll} onMouseDown={this.mouseDownAnimation}>Clear all</button>
-          <button onClick={this.compressAll} onMouseDown={this.mouseDownAnimation}>Compress all</button>
-        </div>
-        <FileLoadInput addimgName={this.addimgName} mouseDownAnimation={this.mouseDownAnimation}/>
+        <div id={s.topSection}>
+          <div className={s.paragraphSection}>
+            lalala
+            <input type="text"/>
+          </div>
+          <div id={s.buttonSection}>
+            <div id={s.topButtons}>
+              <button onClick={this.clearAll} onMouseDown={this.mouseDownAnimation}>Clear all</button>
+              <button onClick={this.compressAll} onMouseDown={this.mouseDownAnimation}>Compress all</button>
+            </div>
+            <FileLoadInput addimgName={this.addimgName} mouseDownAnimation={this.mouseDownAnimation}/>
+          </div>
       </div>
-        {/* <div id={s.imgList}> */}
         <PicList imgList={this.state.imgList} setParentState={this.setParentState}/>
-          {/* <ul> */}
-            {/* {this.showimgList()} */}
-          {/* </ul> */}
-        {/* </div> */}
+        <ConfirmationWindow confirmationHandle={this.confirmationHandle} confirmationWindow={this.state.confirmationWindow}/>
       </div>
-
       </>)
   }
 }

@@ -1,3 +1,7 @@
+html,body {
+  margin: 0;
+}
+
 body {
   background-color: #302e2e;
 }
@@ -86,6 +90,19 @@ li > div {
   display: inline-block;
 }
 
+#topSection {
+  display: flex;
+}
+
+#topSection .paragraphSection {
+  width: calc(100% / 3);
+  background-color: red;
+}
+
+.paragraphSection input {
+  font-size: 14px;
+  width: 2.5rem;
+}
 
 #buttonSection {
   /* background-color: #6aa68e; */
@@ -103,7 +120,7 @@ li > div {
   width: fit-content;
 }
 
-button {
+button, input {
   background-color: #443a3a;
   padding: 5px 10px;
   color: #fff;
@@ -126,7 +143,7 @@ button[wasClicked="true"] {
   border-radius: 10px 30px 6px 10px;
 }
 
-button:focus {
+button:focus, input:focus {
   outline: none;
 }
 

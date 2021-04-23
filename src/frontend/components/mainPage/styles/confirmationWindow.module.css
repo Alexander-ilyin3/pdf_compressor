@@ -1,0 +1,44 @@
+.wrapper {
+  visibility: hidden;
+  width: 100%;
+  height: 100%;
+  background-color: #000000c2;
+  position: absolute;
+  display: flex;
+  opacity: 0;
+  transition: all 0.5s;
+}
+
+.wrapper.active {
+
+  visibility: visible;
+  opacity: 1;
+}
+
+#confirmationWindow {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  height: 30%;
+  color: #faebd7;
+  flex-direction: column;
+  opacity: 0;
+  background-color: #302e2e;
+  border-radius: 50%;
+  visibility: hidden;
+  transition-delay: 0.5s;
+  transition: all 0.5s;
+  transform: rotate(0turn) translate(-300px, -300px);
+}
+
+#confirmationWindow.active {
+  transform: rotate(-0.1turn) translate(-70px, -55px);
+  visibility: visible !important;
+  opacity: 1;
+}
+
+#confirmationWindow h1 {
+  display: block;
+}
