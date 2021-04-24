@@ -93,7 +93,7 @@ class MainPage extends React.Component {
         <div id={s.topSection}>
           <div className={s.paragraphSection}>
             - How much width? <br />
-            - <input type="number" onChange={this.inputChange} value={this.state.widthNumber}/><br />
+            - Near <input type="number" onChange={this.inputChange} value={this.state.widthNumber}/><br />
             - Such much? <br />
             - For whom how.
           </div>

@@ -17,16 +17,18 @@
 
 #confirmationWindow {
   position: absolute;
+  left: -230px;
+  top: -75px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60%;
-  height: 30%;
+  width: 800px;
+  height: 300px;
   color: #faebd7;
   flex-direction: column;
   opacity: 0;
   background-color: #302e2e;
-  border-radius: 50%;
+  border-radius: 50% 50% 75% 50%;
   visibility: hidden;
   transition-delay: 0.5s;
   transition: all 0.5s;
