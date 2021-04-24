@@ -1,8 +1,10 @@
 const initialLoad = require('./initialLoad.js')
-// const resizeTestPicture = require('./resizeTestPicture.js')
+const createFolder = require('./createFolder.js')
 const compressAll = require('./compressAll.js')
 
 function setUpHandlers(ipcMain) {
+
+  createFolder()
 
   ipcMain.handle('initialLoad', async (event, ...args) => {
     // resizeTestPicture()

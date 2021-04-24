@@ -29,7 +29,7 @@ module.exports = async (frontValues) => {
             }
             sharpObject
               .toFormat('jpg')
-              .toFile('./processedPictures/' + name + '.jpg', (err, picinfo) => {
+              .toFile('./PROCESSED_PICTURES/' + name + '.jpg', (err, picinfo) => {
                 // console.log({err})
                 console.log('processing PIC')
                 // console.log({picinfo})
