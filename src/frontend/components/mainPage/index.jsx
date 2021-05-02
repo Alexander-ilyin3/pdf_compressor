@@ -15,12 +15,20 @@ class MainPage extends React.Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     ipcRenderer.invoke('initialLoad').then((response) => {
       this.setState((state, props) => {
         return { imgList: response}
       })
     })
+    document.title = 'Pic compressor version - ' + await getAppVersion()
+    async function getAppVersion() {
+      return new Promise((rs,rj) => {
+        ipcRenderer.invoke('getAppVersion', []).then((appVersion) => {
+          rs(appVersion)
+        })
+      })
+    }
   }
 
   setParentState = (newState) => {
