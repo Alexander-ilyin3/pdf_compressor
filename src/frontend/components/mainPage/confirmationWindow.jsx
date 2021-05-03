@@ -9,7 +9,7 @@ function confirmationWindow(props) {
   return(<>
   <div className={visible ? [s.wrapper, s.active].join(' ') : s.wrapper}>
     <div id={s.confirmationWindow} className={visible ? s.active : ''}>
-      <h1>Really??</h1>
+      <h1>Really???</h1>
       <div className={s.buttonSection}>
         <button value='yes' onClick={props.confirmationHandle}>Yes</button>
         <button value='no' onClick={props.confirmationHandle}>No</button>
