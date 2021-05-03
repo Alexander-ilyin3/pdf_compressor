@@ -1,7 +1,7 @@
 const initialLoad = require('./initialLoad.js')
 const createFolder = require('./createFolder.js')
 const compressAll = require('./compressAll.js')
-import { app } from 'electron';
+const { app } = require('electron')
 
 function setUpHandlers(ipcMain) {
 
