@@ -97,6 +97,7 @@ class MainPage extends React.Component {
 
   render() {
     return(<>
+      <ConfirmationWindow confirmationHandle={this.confirmationHandle} confirmationWindow={this.state.confirmationWindow}/>
       <div id={s.container}>
         <div id={s.topSection}>
           <div className={s.paragraphSection}>
@@ -114,7 +115,6 @@ class MainPage extends React.Component {
           </div>
       </div>
         <PicList imgList={this.state.imgList} setParentState={this.setParentState}/>
-        <ConfirmationWindow confirmationHandle={this.confirmationHandle} confirmationWindow={this.state.confirmationWindow}/>
       </div>
       </>)
   }

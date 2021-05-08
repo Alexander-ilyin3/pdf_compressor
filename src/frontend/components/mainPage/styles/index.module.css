@@ -16,14 +16,14 @@ body {
   /* align-items: center; */
 }
 
-ul {
+#container ul {
   margin: 0;
   padding: 5px;
   max-width: 100%;
   border: 1px double #ffffff0c;
 }
 
-li {
+#container li {
   list-style: none;
   font-size: 26px;
   /* border: 1px solid #587fb5; */
@@ -46,7 +46,7 @@ button:hover {
   box-shadow: 0px 0px 5px 2px #ffffffa3;
 }
 
-li > div {
+#container li > div {
   min-width: 50%;
   max-height: 1.2em;
   display: flex;

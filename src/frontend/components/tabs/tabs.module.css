@@ -1,0 +1,27 @@
+#navTabs {
+  font-size: 1.1rem;
+}
+
+#navTabs ul {
+  display: flex;
+  padding: 0;
+  justify-content: space-evenly;
+}
+
+#navTabs ul li {
+  list-style: none;
+  display: block;
+  margin: 0px 10px;
+  border-left: 1px solid #fff;
+  flex-grow: 1;
+  text-align: center;
+}
+
+#navTabs ul li:first-child { border-left: none; }
+
+#navTabs .tabLink {
+  text-decoration: none;
+  color: #fff;
+  display: block;
+  width: 100%;
+}
