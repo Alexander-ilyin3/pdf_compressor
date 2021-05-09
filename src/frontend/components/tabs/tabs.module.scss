@@ -1,0 +1,141 @@
+@import "src/utilities/appColors.scss";
+$white: #fff;
+
+#navTabs {
+  font-size: 1.1rem;
+}
+
+nav {
+  /* display: flex; */
+  padding: 0;
+  /* justify-content: space-evenly; */
+  /* margin-bottom: 10px; */
+}
+
+#navTabs ul li {
+  list-style: none;
+  /* display: block; */
+  /* margin: 0px 10px; */
+  /* border-left: 1px solid #fff; */
+  /* flex-grow: 1; */
+  text-align: center;
+}
+
+.tabs {
+  list-style: none;
+  margin: 10px auto 0;
+  max-width: 90%;
+  display: flex;
+  padding: 0;
+}
+.tabs li {
+  /* Makes a horizontal row */
+  float: left;
+  flex-grow: 1;
+  /* So the psueudo elements can be
+     abs. positioned inside */
+  position: relative;
+  /* width: 50%; */
+}
+.tabs a {
+  /* Make them block level
+     and only as wide as they need */
+  float: left;
+  padding: 10px 40px;
+  text-decoration: none;
+  width: -webkit-fill-available;
+
+  /* Default colors */
+  color: #4c1e1e;
+  font-size: 1.1rem;
+  background: $tab-unactive-c;
+
+  /* Only round the top corners */
+  -webkit-border-top-left-radius: 15px;
+  -webkit-border-top-right-radius: 15px;
+  -moz-border-radius-topleft: 15px;
+  -moz-border-radius-topright: 15px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+.tabs .active {
+  /* Highest, active tab is on top */
+  z-index: 3;
+}
+.tabs .active a {
+  /* Colors when tab is active */
+  background: $btn-c;
+  color: #ffffff;
+  // box-shadow: 0px 0px 5px 2px #ffc2004b;
+}
+.tabs li:before, .tabs li:after,
+.tabs li a:before, .tabs li a:after {
+  /* All pseudo elements are
+     abs. positioned and on bottom */
+  position: absolute;
+  bottom: 0;
+}
+/* Only the first, last, and active
+   tabs need pseudo elements at all */
+.tabs li:last-child:after,   .tabs li:last-child a:after,
+.tabs li:first-child:before, .tabs li:first-child a:before,
+.tabs .active:after,   .tabs .active:before,
+.tabs .active a:after, .tabs .active a:before {
+  content: "";
+}
+.tabs .active:before, .tabs .active:after {
+  background: $btn-c;
+  // box-shadow: 0px 0px 5px 2px #ffc2004b;
+  /* Squares below circles */
+  z-index: 1;
+}
+/* Squares */
+.tabs li:before, .tabs li:after {
+  background: $tab-unactive-c;
+  width: 10px;
+  height: 10px;
+}
+.tabs li:before {
+  left: -10px;
+}
+.tabs li:after {
+  right: -10px;
+}
+/* Circles */
+.tabs li a:after, .tabs li a:before {
+  width: 20px;
+  height: 20px;
+  /* Circles are circular */
+  -webkit-border-radius: 10px;
+  -moz-border-radius:    10px;
+  border-radius:         10px;
+  background: #302e2e;
+
+  /* Circles over squares */
+  z-index: 2;
+}
+.tabs .active a:after, .tabs .active a:before {
+  background: $tab-unactive-c;
+}
+/* First and last tabs have different
+   outside color needs */
+.tabs li:first-child.active a:before,
+.tabs li:last-child.active a:after {
+  background: #302e2e;
+}
+.tabs li a:before {
+  left: -20px;
+}
+.tabs li a:after {
+  right: -20px;
+}
+
+
+#navTabs ul li:first-child { border-left: none; }
+
+#navTabs .tabLink {
+  text-decoration: none;
+  color: #fff;
+  display: block;
+  width: 100%;
+}

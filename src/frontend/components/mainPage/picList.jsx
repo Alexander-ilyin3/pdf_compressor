@@ -1,6 +1,6 @@
 // import { render } from 'enzyme';
 import React from 'react'
-import s from './styles/index.module.css'
+import s from './styles/index.module.scss'
 
 class PicList extends React.Component {
   constructor(props) {

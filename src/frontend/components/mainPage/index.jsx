@@ -1,5 +1,5 @@
 import React from 'react'
-import s from './styles/index.module.css'
+import s from './styles/index.module.scss'
 import FileLoadInput from './fileLoadInput.jsx'
 import PicList from './picList'
 import ConfirmationWindow from './confirmationWindow'
