@@ -1,0 +1,9 @@
+@import 'src/utilities/appColors.scss';
+
+#container {
+  width: inherit;
+  border: 1px solid #4e4e4e;
+  text-align: center;
+  margin: 10px 0px;
+  color: $tab-unactive-c;
+}

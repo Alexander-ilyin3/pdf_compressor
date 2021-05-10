@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import s from './styles/index.module.scss'
 import FileLoadInput from './fileLoadInput.jsx'
 import PicList from './picList'
@@ -16,11 +16,16 @@ class MainPage extends React.Component {
   }
 
   async componentDidMount() {
-    ipcRenderer.invoke('initialLoad').then((response) => {
-      this.setState((state, props) => {
-        return { imgList: response}
-      })
-    })
+    // ipcRenderer.invoke('initialLoad').then((response) => {
+    //   this.setState((state, props) => {
+    //     return { imgList: response}
+    //   })
+    // })
+    try {
+      const state = JSON.parse(localStorage.getItem('state', state))
+      this.setState(state)
+    } catch(e) { console.log('state nema') }
+    
     document.title = 'Pic compressor version - ' + await getAppVersion()
     async function getAppVersion() {
       return new Promise((rs,rj) => {
@@ -29,6 +34,10 @@ class MainPage extends React.Component {
         })
       })
     }
+  }
+
+  componentDidUpdate = () => {
+    this.updateStorage(this.state)
   }
 
   setParentState = (newState) => {
@@ -64,9 +73,9 @@ class MainPage extends React.Component {
     }
   }
 
-  addimgName = (fileName) => {
+  addimgName = (picArray) => {
     this.setState((state, props) => {
-      return { imgList: [...state.imgList, fileName]}
+      return { imgList: [...state.imgList, ...picArray]}
     })
   }
 
@@ -95,7 +104,13 @@ class MainPage extends React.Component {
     this.setState({widthNumber: e.target.value});
   }
 
+  updateStorage = (state) => {
+    localStorage.setItem('state', JSON.stringify(state))
+    console.log(' -==========- ',state)
+  }
+
   render() {
+
     return(<>
       <ConfirmationWindow confirmationHandle={this.confirmationHandle} confirmationWindow={this.state.confirmationWindow}/>
       <div id={s.container}>

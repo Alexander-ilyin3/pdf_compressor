@@ -1,5 +1,5 @@
 import React from 'react'
-import s from './styles/fileLoadInput.module.css'
+import s from './styles/fileLoadInput.module.scss'
 
 class FileLoadInput extends React.Component {
   constructor(props) {
@@ -9,13 +9,16 @@ class FileLoadInput extends React.Component {
   }
   handleSubmit = (event) => {
     event.preventDefault()
+    const imagesArray = []
 
     this.fileInput.current.files.forEach(imgObject => {
       if ( checkIfImage(imgObject) ) {
-        this.props.addimgName({name: imgObject.name, path: imgObject.path})
-
+        imagesArray.push({name: imgObject.name, path: imgObject.path})
       }
     })
+
+    this.props.addimgName(imagesArray)
+
     function checkIfImage(imgObject) {
       console.log(imgObject)
       return imgObject.type.startsWith('image/')

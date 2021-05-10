@@ -1,4 +1,5 @@
 import React from 'react'
+import s from './commonDell.module.scss'
 
 class CommonDell extends React.Component {
   constructor(props) {
@@ -7,8 +8,8 @@ class CommonDell extends React.Component {
 
   render() {
     return (
-      <div>
-        SECOND PAGE
+      <div id={s.container}>
+        TO BE CONTINUED...
       </div>
     )
   }

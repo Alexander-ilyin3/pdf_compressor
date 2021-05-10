@@ -4,6 +4,7 @@ import { HashRouter as Router, Switch, Route, Link, Redirect } from 'react-route
 import MainPage from './frontend/components/mainPage/index.jsx'
 import CommonDell from './frontend/components/commonDell/index.jsx'
 import Tabs from './frontend/components/tabs/mainTabs'
+import Template from './frontend/components/textTemplates/index'
 
 export default function App() {
   return (<>
@@ -14,6 +15,7 @@ export default function App() {
         <Route exact path="/home" component={MainPage}>
         </Route>
         <Route exact path="/commonDell" component={CommonDell} />
+        <Route exact path="/templates" component={Template} />
       </Switch>
     </Router>
   </>)

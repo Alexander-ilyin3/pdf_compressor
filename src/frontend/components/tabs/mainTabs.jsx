@@ -17,7 +17,6 @@ class Tabs extends React.Component {
   handleClick = () => {
     let path = window.location.hash.match(/(.*)/, 'g')[1]
     this.setState({activeHash: path})
-    console.log(document.querySelector(`[href="${path}"]`).parentNode)
   }
 
   render() {
@@ -30,11 +29,13 @@ class Tabs extends React.Component {
           <li className={this.state.activeHash === '#/commonDell' ? s.active : ''}>
             <Link to="/commonDell" className={s.tabLink}>Dell common</Link>
           </li>
+          <li className={this.state.activeHash === '#/templates' ? s.active : ''}>
+            <Link to="/templates" className={s.tabLink}>Templates</Link>
+          </li>
         </ul>
       </nav>
     )
   }
-
 }
 
 export default Tabs

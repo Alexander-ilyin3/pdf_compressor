@@ -34,7 +34,7 @@ body {
   /* border: 1px solid #587fb5; */
   /* border-bottom: none; */
   padding: 0px 10px;
-  color: #fff;
+  color: $text-c;
   border-radius: 3px 3px 3px 3px;
   border-collapse: collapse;
   margin: 0;
@@ -102,7 +102,7 @@ button:hover {
 #topSection .paragraphSection {
   width: calc(100% / 3);
   padding-left: 15px;
-  color: #fff;
+  color: $text-c;
   position: absolute;
 }
 
@@ -137,7 +137,7 @@ button:hover {
 button, input {
   background-color: $btn-c;
   padding: 5px 10px;
-  color: #fff;
+  color: $text-c;
   font-size: 20px;
   border: none;
   border-radius: 5px 5px 5px 5px;
