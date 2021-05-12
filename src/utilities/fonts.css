@@ -1,9 +1,26 @@
-@font-face {
+/* @font-face {
   font-family: 'Arvo-Regular';
   src: url('./fonts/Arvo/Arvo-Regular.ttf');
+} */
+
+@font-face {
+  font-family: 'arvoregular';
+  src: url('./fonts/Arvo/arvo-regular-webfont.woff2') format('woff2'),
+       url('./fonts/Arvo/arvo-regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
+
+/* @font-face {
+  font-family: 'IndieFlower-Regular';
+  src: url('./fonts/Indie_Flower/IndieFlower-Regular.ttf');
+} */
 
 @font-face {
   font-family: 'IndieFlower-Regular';
-  src: url('./fonts/Indie_Flower/IndieFlower-Regular.ttf');
+  src: url('./fonts/Indie_Flower/indieflower-regular-webfont.woff2') format('woff2'),
+       url('./fonts/Indie_Flower/indieflower-regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
 }

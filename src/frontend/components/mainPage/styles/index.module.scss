@@ -3,7 +3,7 @@
 
 html,body {
   margin: 0;
-  font-family: 'Arvo-Regular';
+  font-family: 'arvoregular';
 }
 
 body {
@@ -148,7 +148,7 @@ button, input {
   margin: 3px;
   box-shadow: 0px 0px 5px 2px $btn-shadow-c;
   transition: 0.1s;
-  font-family: 'Arvo-Regular';
+  font-family: 'arvoregular';
 }
 
 button[wasClicked="true"] {
