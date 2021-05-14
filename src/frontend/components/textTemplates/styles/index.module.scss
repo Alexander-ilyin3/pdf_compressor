@@ -1,0 +1,17 @@
+#root {
+  display: flex;
+}
+
+#addTemplate {
+  width: 60%;
+  height: 30px;
+  position: relative;
+  margin: 10px auto;
+}
+
+#addTemplate span {
+  display: block;
+  position: absolute;
+  top: 4px;
+  left: 50%;
+}

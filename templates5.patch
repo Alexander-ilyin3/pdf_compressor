@@ -1,0 +1,246 @@
+diff --git a/src/App.jsx b/src/App.jsx
+index c3151bc..4b9b5ee 100644
+--- a/src/App.jsx
++++ b/src/App.jsx
+@@ -4,7 +4,7 @@ import { HashRouter as Router, Switch, Route, Link, Redirect } from 'react-route
+ import MainPage from './frontend/components/mainPage/index.jsx'
+ import CommonDell from './frontend/components/commonDell/index.jsx'
+ import Tabs from './frontend/components/tabs/mainTabs'
+-import Template from './frontend/components/textTemplates/index'
++import Template from './frontend/components/textTemplates/index.jsx'
+ 
+ export default function App() {
+   return (<>
+diff --git a/src/frontend/components/tabs/mainTabs.jsx b/src/frontend/components/tabs/mainTabs.jsx
+index 85ca578..12c2298 100644
+--- a/src/frontend/components/tabs/mainTabs.jsx
++++ b/src/frontend/components/tabs/mainTabs.jsx
+@@ -6,7 +6,7 @@ class Tabs extends React.Component {
+   constructor(props) {
+     super(props)
+     this.state = {
+-      activeHash: '#/Home'
++      activeHash: '#/Home' //window?.location?.hash === '#/home' ? '#/Home' : window?.location?.hash || '#/Home'
+     }
+   }
+ 
+@@ -20,6 +20,7 @@ class Tabs extends React.Component {
+   }
+ 
+   render() {
++    console.log(window?.location?.hash)
+     return(
+       <nav>
+         <ul onClick={this.handleClick} className={s.tabs}>
+diff --git a/src/frontend/components/textTemplates/addTemplateModal.jsx b/src/frontend/components/textTemplates/addTemplateModal.jsx
+index 6011a5a..2d3c839 100644
+--- a/src/frontend/components/textTemplates/addTemplateModal.jsx
++++ b/src/frontend/components/textTemplates/addTemplateModal.jsx
+@@ -1,15 +1,64 @@
+ import React from 'react'
++import s from './styles/modal.module.scss'
+ 
+ export default class AddTemplateModal extends React.Component {
+   constructor(props) {
+     super(props)
++    this.state = {
++      insertMarkIndex: -1,
++      markMode: false
++    }
+   }
+ 
++  toggleMarkMode = () => {
++    this.setState({markMode: !this.state.markMode})
++  }
++
++  placeMark = (e) => {
++    if ( !this.state.markMode ) return
++    if ( e.target.children[0] ) e.target.removeChild(e.target.children[0])
++    const index = document.getSelection().focusOffset
++    console.log(index)
++    const text = e.target.innerText
++    const firstPart = text.slice(0, index)
++    const secondPart = text.slice(index)
++    
++    
++    e.target.innerHTML = firstPart.replaceAll('<', '&lt').replaceAll('>', '&gt')
++    e.target.innerHTML += this.mark()
++    e.target.innerHTML += secondPart.replaceAll('<', '&lt').replaceAll('>', '&gt')
++
++    // const newText = this.insertToStr(processed, index, this.mark())
++    // e.target.innerHTML = newText
++    // console.log(newText, processed)
++  }
++
++  mark = () => {
++    return (
++      `<span id=${s.mark} >|</span>`
++    )
++  }
++
++  insertToStr = (str, index, value) => {
++    return str.slice(0, index) + value + str.slice(index);
++    // return str.substr(0, index) + value + str.substr(index);
++  }
+ 
+   render() {
++    console.log('this.state.markMode ', this.state.markMode)
+     return(
+-      <div>
+-
++      <div className={this.props.isActive ? [s.wrapper, s.active].join(' ') : s.wrapper}>
++        <div className={s.innerWrapper}>
++          <button 
++            className={this.state.markMode ?
++               `${s.topButtons} ${s.insertMarkBtn} ${s.markActive}` :
++               `${s.topButtons} ${s.insertMarkBtn}`}
++            onClick={this.toggleMarkMode}>
++            <span>Mark</span>
++          </button>
++          <button className={`${s.topButtons} ${s.closeButton}`} onClick={this.props.closeModal}><span>X</span></button>
++          <div className={s.editableDiv} contenteditable="true" onClick={this.placeMark}>&lt;taglala&gt;&lt;/taglala&gt;</div>
++        </div>
+       </div>
+     )
+   }
+diff --git a/src/frontend/components/textTemplates/index.jsx b/src/frontend/components/textTemplates/index.jsx
+index fb526f7..14ecd16 100644
+--- a/src/frontend/components/textTemplates/index.jsx
++++ b/src/frontend/components/textTemplates/index.jsx
+@@ -1,19 +1,35 @@
+ import React from 'react'
++import TemplateList from './templateList.jsx'
++import AddTemplateModal from './addTemplateModal.jsx'
++import s from './styles/index.module.scss'
+ 
+ class Templates extends React.Component {
+   constructor(props) {
+     super(props)
++    this.state = {
++      modalIsVisible: false
++    }
+   }
+ 
+   click = (e) => {
+     console.log(e.target.selectionStart)
+   }
+ 
++  invokeModal = () => {
++    this.setState({modalIsVisible: true})
++  }
++
++  closeModal = () => {
++    this.setState({modalIsVisible: false})
++  }
++
+   render = () => {
+-    return(
+-      <div>
+-        Hello
+-        <div name="" id="" cols="30" rows="10" onClick={this.click}>rkeslkrjaklsejr serjalsejrlk ajs;lker</div>
++    return (
++      <div id={s.root}>
++        <button id={s.addTemplate} onClick={this.invokeModal}><span>+</span></button>
++        {/* <Templates /> */}
++
++        <AddTemplateModal isActive={this.state.modalIsVisible} closeModal={this.closeModal}/>
+       </div>
+     )
+   }
+diff --git a/src/frontend/components/textTemplates/styles/index.module.scss b/src/frontend/components/textTemplates/styles/index.module.scss
+new file mode 100644
+index 0000000..9ee9aa3
+--- /dev/null
++++ b/src/frontend/components/textTemplates/styles/index.module.scss
+@@ -0,0 +1,17 @@
++#root {
++  display: flex;
++}
++
++#addTemplate {
++  width: 60%;
++  height: 30px;
++  position: relative;
++  margin: 10px auto;
++}
++
++#addTemplate span {
++  display: block;
++  position: absolute;
++  top: 4px;
++  left: 50%;
++}
+diff --git a/src/frontend/components/textTemplates/styles/modal.module.scss b/src/frontend/components/textTemplates/styles/modal.module.scss
+new file mode 100644
+index 0000000..6761224
+--- /dev/null
++++ b/src/frontend/components/textTemplates/styles/modal.module.scss
+@@ -0,0 +1,68 @@
++.wrapper {
++  visibility: hidden;
++  display: flex;
++  position: absolute;
++  width: 100%;
++  height: 100%;
++  top: 0;
++  background-color: #0000008b;
++  z-index: 999;
++}
++
++.active {
++  visibility: visible;
++}
++
++.innerWrapper {
++  width: 80%;
++  height: 80%;
++  background-color: green;
++  margin: 100px auto;
++  position: relative;
++}
++
++.topButtons {
++  height: 30px;
++  display: flex;
++  position: absolute;
++  padding: 0;
++  margin: 20px;
++}
++
++.topButtons span {
++  display: block;
++  position: absolute;
++  left: 7px;
++  top: 4px;
++}
++
++.closeButton {
++  right: 0;
++  width: 30px;
++}
++
++.insertMarkBtn {
++  left: 0;
++  padding: 3px 3px;
++}
++
++.insertMarkBtn span {
++  position: initial;
++}
++
++.editableDiv {
++  width: 80%;
++  min-height: 1rem;
++  height: fit-content;
++  background-color: red;
++  margin: 60px auto 0;
++}
++
++.markActive {
++  background-color: yellow;
++}
++
++span#mark {
++  color: yellow;
++  text-decoration: bold;
++}

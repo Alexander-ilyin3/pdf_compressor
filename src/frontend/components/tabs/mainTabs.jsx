@@ -6,7 +6,7 @@ class Tabs extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      activeHash: '#/Home'
+      activeHash: '#/Home' //window?.location?.hash === '#/home' ? '#/Home' : window?.location?.hash || '#/Home'
     }
   }
 
@@ -20,6 +20,7 @@ class Tabs extends React.Component {
   }
 
   render() {
+    console.log(window?.location?.hash)
     return(
       <nav>
         <ul onClick={this.handleClick} className={s.tabs}>
