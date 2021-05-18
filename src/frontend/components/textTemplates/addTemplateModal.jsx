@@ -7,24 +7,74 @@ export default class AddTemplateModal extends React.Component {
     this.state = {
       insertMarkIndex: -1,
       markMode: false,
-      divText: '<tagggg></tagggg>',
+      divText: '',
+      simpleText: '',
       headerTemplate: '',
-      changebleDiv: null
+      changebleDiv: null,
+      headerTouched: false,
+      htmlMode: true,
+      currentSelection: 0
+    }
+    this.onPastePlainText = this.onPastePlainText.bind(this)
+  }
+
+  componentDidMount = () => {
+    this.setState({changebleDiv: document.body.querySelector(`div#editable`)})
+    this.setState({headerTemplate: this.props.lastCommonHeaderName})
+    this.setState({headerTouched: false})
+    document.getElementById('editable').addEventListener('paste', this.onPastePlainText)
+
+    const editObj = this.props.editInfo
+
+    if ( editObj.active === true ) {
+      const { divText, headerTemplate, id, insertMarkIndex} = editObj.templateObj
+      this.setState({
+        divText: divText,
+        headerTemplate: headerTemplate,
+        headerTouched: true
+      })
     }
   }
 
-  componentDidMount() {
-    this.setState({changebleDiv: document.body.querySelector(`div#editable`)})
-    this.setState({headerTemplate: this.props.lastCommonHeaderName})
+  componentWillUnmount = () => {
+    console.log('unmounted')
+    this.props.editModeOff()
+  }
+
+  onPastePlainText (e) {
+    const pastedText = e.clipboardData.getData('text/plain')
+
+    e.target.textContent = pastedText
+
+    this.setState({divText: pastedText, htmlMode: false})
+    e.preventDefault()
+    return false
+  }
+
+
+  headerTouched = () => {
+    if ( this.state.headerTouched ) return
+    this.setState({headerTemplate: ''})
+    this.setState({headerTouched: true})
   }
 
   headerTemplateChange = (e) => {
     this.setState({headerTemplate: e.target.value})
   }
 
+  onFocus = () => {
+    if ( this.state.markMode ) return
+    this.setState({htmlMode: false})
+  }
+
   onDivContentChange = (e) => {
     if ( this.state.markMode ) return
-    this.setState({divText: e.innerHTML})
+
+    this.setState({divText: e.target.innerText})
+
+    if ( this.state.htmlMode ) {
+      this.setState({ htmlMode: false })
+    }
   }
 
   toggleMarkMode = () => {
@@ -32,10 +82,8 @@ export default class AddTemplateModal extends React.Component {
   }
 
   deleteChild = (e) => {
-    // console.log(e.target)
-    // console.log('ChangebleDiv', this.state.changebleDiv)
     this.setState({insertMarkIndex: -1})
-    this.state.changebleDiv.children.forEach( child => this.state.changebleDiv.removeChild(child))  //.removeChild(e.target.children[0])
+    this.state.changebleDiv.children.forEach( child => this.state.changebleDiv.removeChild(child))
     this.state.changebleDiv.innerText = this.state.changebleDiv.innerText
   }
 
@@ -43,20 +91,18 @@ export default class AddTemplateModal extends React.Component {
 
     if ( !this.state.markMode ) return
     const index = document.getSelection().focusOffset
-    this.setState({insertMarkIndex: index})
-    // if ( e.target.children[0] ) e.target.removeChild(e.target.children[0])
+    this.setState({insertMarkIndex: index, simpleText: this.state.changebleDiv.innerText})
     const text = e.target.innerText
     const firstPart = text.slice(0, index)
     const secondPart = text.slice(index)
 
+    let divTextString = ''
 
-    e.target.innerHTML = firstPart.replaceAll('<', '&lt').replaceAll('>', '&gt')
-    e.target.innerHTML += this.mark()
-    e.target.innerHTML += secondPart.replaceAll('<', '&lt').replaceAll('>', '&gt')
+    divTextString = firstPart.replaceAll('<', '&lt').replaceAll('>', '&gt')
+    divTextString += this.mark()
+    divTextString += secondPart.replaceAll('<', '&lt').replaceAll('>', '&gt')
 
-    // const newText = this.insertToStr(processed, index, this.mark())
-    // e.target.innerHTML = newText
-    // console.log(newText, processed)
+    this.setState({divText: divTextString, htmlMode: true})
   }
 
   mark = () => {
@@ -66,16 +112,31 @@ export default class AddTemplateModal extends React.Component {
   }
 
   insertToStr = (str, index, value) => {
-    return str.slice(0, index) + value + str.slice(index);
-    // return str.substr(0, index) + value + str.substr(index);
+    return str.slice(0, index) + value + str.slice(index)
   }
 
   sendState = () => {
-    const state = { divText: this.state.divText, insertMarkIndex: this.state.insertMarkIndex, headerTemplate: this.state.headerTemplate }
-    this.props.saveTemplate(state)
+    if ( this.props?.editInfo?.active ) {
+      console.log('this.props.editInfo', this.props.editInfo)
+      return this.props.saveTemplate('edit', { 
+        divText: this.state.divText, 
+        insertMarkIndex: this.state.insertMarkIndex, 
+        headerTemplate: this.state.headerTemplate,
+        simpleText: this.state.simpleText,
+        id: this.props.editInfo.templateObj.id })
+    }
+    const state = {
+      divText: this.state.divText, 
+      insertMarkIndex: this.state.insertMarkIndex, 
+      headerTemplate: this.state.headerTemplate,
+      simpleText: this.state.simpleText,
+      id: new Date().getTime() 
+    }
+    this.props.saveTemplate('create', state)
   }
 
   render() {
+    let dText = {__html: this.state.divText}
     return(
       <div className={this.props.isActive ? [s.wrapper, s.active].join(' ') : s.wrapper}>
         <div className={s.innerWrapper}>
@@ -87,32 +148,21 @@ export default class AddTemplateModal extends React.Component {
             <span>Mark</span>
           </button>
           <button className={`${s.topButtons} ${s.closeButton}`} onClick={this.props.closeModal}><span>X</span></button>
-          <input className={s.templateHeader} onChange={this.headerTemplateChange} value={this.state.headerTemplate}></input>
-          <ChangebleDiv
-            clas={s.editableDiv}
-            onMouseDown={this.deleteChild}
-            onClick={this.placeMark}
-            onChange={this.onDivContentChange}>
-              {this.state.divText}
-          </ChangebleDiv>
-          <button className={s.addTemplateBtn} onClick={this.sendState}>Add template</button>
+          <input className={s.templateHeader} onChange={this.headerTemplateChange} value={ this.state.headerTemplate } onClick={this.headerTouched}></input>
+          <div 
+            className={s.editableDiv} 
+            contenteditable="true" 
+            onMouseDown={this.deleteChild} 
+            onClick={this.placeMark} 
+            onInput={this.onDivContentChange} 
+            onFocus={this.onFocus}
+            id="editable"
+            dangerouslySetInnerHTML={this.state.htmlMode ? dText : undefined }>
+              {/* {this.state.htmlMode ? undefined : this.state.divText} */}
+          </div>
+          <button className={s.addTemplateBtn} onClick={this.sendState}>{this.props.editInfo?.active ? 'Save changes' : 'Add template'}</button>
         </div>
       </div>
     )
   }
-}
-
-class ChangebleDiv extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
-  render () {
-    return(
-    <div className={this.props.clas} contenteditable="true" onMouseDown={this.props.onMouseDown} onClick={this.props.onClick} onChange={this.props.onChange} id="editable">
-      {this.props.children}
-    </div>
-    )
-  }
-
 }

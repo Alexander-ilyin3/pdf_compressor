@@ -26,7 +26,7 @@ class MainPage extends React.Component {
       this.setState(state)
     } catch(e) { console.log('state nema') }
     
-    document.title = 'Pic compressor version - ' + await getAppVersion()
+    document.title = 'Ciklum helper - ' + await getAppVersion()
     async function getAppVersion() {
       return new Promise((rs,rj) => {
         ipcRenderer.invoke('getAppVersion', []).then((appVersion) => {
