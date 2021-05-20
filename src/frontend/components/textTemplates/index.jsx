@@ -2,6 +2,7 @@ import React from 'react'
 import TemplateList from './templateList.jsx'
 import AddTemplateModal from './addTemplateModal.jsx'
 import s from './styles/index.module.scss'
+const { ipcRenderer } = require('electron')
 
 let lastCommonHeaderName = 'Template_1'
 
@@ -126,8 +127,14 @@ class Templates extends React.Component {
   }
 
   componentDidMount() {
-    const templates = JSON.parse(localStorage.getItem('templates'))
-    if ( templates ) this.setState({templates: templates})
+    ipcRenderer.invoke('templateControls', ['load']).then((response) => {
+      console.log('from DB on front ', response )
+      if ( !response || (response.length && response.length === 0 )) { return }
+
+      this.setState((state, props) => {
+        return response
+      })
+    })
   }
 
   componentDidUpdate() {
@@ -146,17 +153,19 @@ class Templates extends React.Component {
     }
 
     lastCommonHeaderName = canculateLastName()
-    localStorage.setItem('templates', JSON.stringify(this.state.templates))
+      ipcRenderer.invoke('templateControls', ['set', this.state]).then((response) => {
+        console.log('on front - ', response)
+      })
   }
 
   render = () => {
     return (
       <div id={s.root}>
         <button id={s.addTemplate} onClick={this.invokeModal}><span>+</span></button>
-        <TemplateList 
-          templates={this.state.templates} 
-          deleteTemplate={this.deleteTemplate} 
-          useTemplate={this.useTemplate} 
+        <TemplateList
+          templates={this.state.templates}
+          deleteTemplate={this.deleteTemplate}
+          useTemplate={this.useTemplate}
           editTemplate={this.editTemplate}
         />
 

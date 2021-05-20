@@ -25,7 +25,7 @@ class MainPage extends React.Component {
       const state = JSON.parse(localStorage.getItem('state', state))
       this.setState(state)
     } catch(e) { console.log('state nema') }
-    
+
     document.title = 'Ciklum helper - ' + await getAppVersion()
     async function getAppVersion() {
       return new Promise((rs,rj) => {

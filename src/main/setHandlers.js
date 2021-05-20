@@ -1,15 +1,16 @@
-const initialLoad = require('./initialLoad.js')
 const createFolder = require('./createFolder.js')
 const compressAll = require('./compressAll.js')
 const { app } = require('electron')
+const templateControls = require('./nedbControls/templateControls.js')
 
 function setUpHandlers(ipcMain) {
 
   createFolder()
 
-  ipcMain.handle('initialLoad', async (event, ...args) => {
+  ipcMain.handle('templateControls', async (event, args) => {
+    console.log(args[0])
     // resizeTestPicture()
-    return await initialLoad()
+    return await templateControls(args[0], args[1])
   })
   ipcMain.handle('compressAll', async (event, args) => {
     console.log({args})
