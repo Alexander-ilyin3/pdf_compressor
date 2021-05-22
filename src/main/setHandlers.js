@@ -8,12 +8,12 @@ function setUpHandlers(ipcMain) {
   createFolder()
 
   ipcMain.handle('templateControls', async (event, args) => {
-    console.log(args[0])
+    // console.log(args[0])
     // resizeTestPicture()
     return await templateControls(args[0], args[1])
   })
   ipcMain.handle('compressAll', async (event, args) => {
-    console.log({args})
+    // console.log({args})
     // resizeTestPicture()
     return compressAll(args)
   })

@@ -20,7 +20,7 @@ class Tabs extends React.Component {
   }
 
   render() {
-    console.log(window?.location?.hash)
+    // console.log(window?.location?.hash)
     return(
       <nav>
         <ul onClick={this.handleClick} className={s.tabs}>

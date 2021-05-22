@@ -37,7 +37,7 @@ export default class AddTemplateModal extends React.Component {
   }
 
   componentWillUnmount = () => {
-    console.log('unmounted')
+    // console.log('unmounted')
     this.props.editModeOff()
   }
 
@@ -117,7 +117,7 @@ export default class AddTemplateModal extends React.Component {
 
   sendState = () => {
     if ( this.props?.editInfo?.active ) {
-      console.log('this.props.editInfo', this.props.editInfo)
+      // console.log('this.props.editInfo', this.props.editInfo)
       return this.props.saveTemplate('edit', { 
         divText: this.state.divText, 
         insertMarkIndex: this.state.insertMarkIndex, 

@@ -20,7 +20,7 @@ class FileLoadInput extends React.Component {
     this.props.addimgName(imagesArray)
 
     function checkIfImage(imgObject) {
-      console.log(imgObject)
+      // console.log(imgObject)
       return imgObject.type.startsWith('image/')
     }
   }

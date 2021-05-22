@@ -53,15 +53,15 @@ class MainPage extends React.Component {
   }
 
   compressAll = () => {
-    console.log('this.state.imgList', this.state.imgList)
+    // console.log('this.state.imgList', this.state.imgList)
     ipcRenderer.invoke('compressAll', [this.state.imgList, this.state.widthNumber]).then((responseImgObj) => {
-      console.log({responseImgObj})
+      // console.log({responseImgObj})
       this.setState((state, props) => {
         const changedState = processResponse(state.imgList, responseImgObj)
         return changedState
       })
       setTimeout(() => {
-        console.log(this.state.imgList)
+        // console.log(this.state.imgList)
       }, 2000);
     })
 
@@ -106,7 +106,7 @@ class MainPage extends React.Component {
 
   updateStorage = (state) => {
     localStorage.setItem('state', JSON.stringify(state))
-    console.log(' -==========- ',state)
+    // console.log(' -==========- ',state)
   }
 
   render() {

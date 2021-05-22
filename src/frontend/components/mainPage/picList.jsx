@@ -10,7 +10,7 @@ class PicList extends React.Component {
 
   removeItem = (event) => {
     const itemId = event.target.attributes.itemkey.value
-    console.log(itemId)
+    // console.log(itemId)
     // this.setState((state, props) => {
     const stateArray = this.props.imgList
     stateArray.splice(itemId, 1)
