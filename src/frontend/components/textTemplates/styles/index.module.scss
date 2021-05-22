@@ -1,6 +1,9 @@
 #root {
   display: flex;
   flex-direction: column;
+  border: 1px solid #4e4e4e;
+  padding-top: 10px;
+  border-radius: 5px;
 }
 
 #addTemplate {

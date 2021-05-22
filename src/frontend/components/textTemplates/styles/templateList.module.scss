@@ -53,10 +53,14 @@
 }
 
 .useButton {
-  flex-grow: 10;
+  width: calc( 100% / 1.25 );
+  transition: all 0.5s;
 }
 
 .editButton {
-  flex-grow: 1;
+  width: calc( 100% / 5 )
 }
 
+.useAnimationActive {
+  color: #6bd44b
+}

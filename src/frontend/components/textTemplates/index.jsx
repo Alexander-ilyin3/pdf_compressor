@@ -5,6 +5,7 @@ import s from './styles/index.module.scss'
 const { ipcRenderer } = require('electron')
 
 let lastCommonHeaderName = 'Template_1'
+let timeout;
 
 class Templates extends React.Component {
   constructor(props) {
@@ -16,12 +17,18 @@ class Templates extends React.Component {
       editMode: {
         active: false,
         templateId: 0
-      }
+      },
+      useAnimation: {
+        active: false,
+        liId: 0
+      },
+      lastCopiedContent: '',
+      lastUsedTemplateId: 0
     }
   }
 
   click = (e) => {
-    console.log(e.target.selectionStart)
+    // console.log(e.target.selectionStart)
   }
 
   invokeModal = () => {
@@ -37,7 +44,7 @@ class Templates extends React.Component {
       this.setState( state => {
         const newState = state.templates.map((template) => {
           if ( template.id != childState.id ) return template
-          console.log('CHANGED CHILD', childState)
+          // console.log('CHANGED CHILD', childState)
           return childState
         })
         return { templates: newState}
@@ -76,7 +83,7 @@ class Templates extends React.Component {
 
     const index = templateObj.insertMarkIndex
     let clipboardText = ''
-
+    console.log('clipboard text', clipboardText)
     await navigator.clipboard.readText()
       .then(text => { clipboardText = text })
       .catch(err => { console.log(err) })
@@ -86,13 +93,27 @@ class Templates extends React.Component {
 
     const newText = this.commonSplice(text, index, 0, clipboardText)
 
+    this.useAnimation(templateObj)
+
+    if ( templateObj.id === this.state.lastUsedTemplateId && clipboardText === this.state.lastCLipboardContent ) return
+    this.setState({lastUsedTemplateId: templateObj.id, lastCLipboardContent: newText})
+
     var blob = new Blob([newText], {type: 'text/plain'});
     var item = new ClipboardItem({'text/plain': blob});
 
     await navigator.clipboard.write([item])
-      .then(t => console.log(1))
+      .then( async t => { })
       .catch(e => console.log(e))
+  }
 
+  useAnimation = (templateObj) => {
+    // console.log('ANIMATION',  templateObj.id)
+    this.setState( { useAnimation: { active: true, liId: templateObj.id } } )
+
+    if ( timeout ) clearTimeout( timeout )
+      timeout = setTimeout(() => {
+      this.setState( { useAnimation: { active: false, liId: 0 } } )
+    }, 1000)
   }
 
   editTemplate = (e) => {
@@ -101,8 +122,9 @@ class Templates extends React.Component {
 
     this.setState(() => {
 
+      
       setTimeout(() => {
-        console.log('this.state', this.state)
+        // console.log('this.state', this.state)
       }, 1000)
       return {modalIsVisible: true, editMode: {active: true, templateObj: templateObj}}
     })
@@ -114,11 +136,11 @@ class Templates extends React.Component {
 
   findTemplateObject = (element) => {
     const id = element.target.parentNode.parentNode.attributes?.listid?.value;
-    console.log({id})
+    // console.log({id})
     if ( !id ) return null
 
     const templateObj = this.state.templates.find( template => { console.log( template.id, id ); return template.id == id } )
-    console.log({templateObj})
+    // console.log({templateObj})
     return templateObj
   }
 
@@ -128,7 +150,7 @@ class Templates extends React.Component {
 
   componentDidMount() {
     ipcRenderer.invoke('templateControls', ['load']).then((response) => {
-      console.log('from DB on front ', response )
+      // console.log('from DB on front ', response )
       if ( !response || (response.length && response.length === 0 )) { return }
 
       this.setState((state, props) => {
@@ -154,8 +176,9 @@ class Templates extends React.Component {
 
     lastCommonHeaderName = canculateLastName()
       ipcRenderer.invoke('templateControls', ['set', this.state]).then((response) => {
-        console.log('on front - ', response)
+        // console.log('on front - ', response)
       })
+      console.log('this.state.lastCopiedContent', this.state.lastCopiedContent)
   }
 
   render = () => {
@@ -167,6 +190,7 @@ class Templates extends React.Component {
           deleteTemplate={this.deleteTemplate}
           useTemplate={this.useTemplate}
           editTemplate={this.editTemplate}
+          useAnimation={this.state.useAnimation}
         />
 
         { this.state.modalIsVisible ?

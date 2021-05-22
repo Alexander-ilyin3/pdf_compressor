@@ -6,13 +6,13 @@ return new Promise((rs,rj) => {
 
   if ( param === 'load' ) {
     db.findOne({ datatype: 'templates' }, function (err, docs) {
-      if ( err || !docs || !docs['data']) rs( [] )
+      if ( err || !docs || !docs['data']) return rs( [] ) 
       rs( docs['data'] )
     })
   } else if ( param === 'set' ) {
     db.update({ datatype: 'templates' }, { datatype: 'templates', data: state }, { upsert: true }, function (err, numReplaced, upsert) {
       rs()
-      console.log('db should update')
+      // console.log('db should update')
     })
   }
 })
