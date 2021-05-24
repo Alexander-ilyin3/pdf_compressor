@@ -6,6 +6,27 @@ export default class TemplateList extends React.Component {
     super(props)
   }
 
+  onDragStart = (e, templateObj) => {
+    console.log('start', templateObj)
+  }
+
+  onDragLeave = (e) => {
+
+  }
+
+  onDragEnd = (e) => { 
+    
+  }
+
+  onDragOver = (e) => { 
+    e.preventDefault()
+  }
+
+  onDrop = (e, templateObj) => { 
+    e.preventDefault()
+    console.log('drop', templateObj)
+  }
+
   list() {
     const listArray = this.props.templates.map((templateObj) => {
       const { divText, headerTemplate, insertMarkIndex, id } = templateObj
@@ -13,7 +34,15 @@ export default class TemplateList extends React.Component {
       // console.log('props - ', this.props.useAnimation.active, this.props.useAnimation.liId, id)
 
       return (
-        <li indexmarker={insertMarkIndex} listid={id}>
+        <li indexmarker={insertMarkIndex} 
+            listid={id} 
+            draggable="true" 
+            onDragStart={ e => this.onDragStart(e, templateObj) }
+            onDragLeave={ e => this.onDragLeave(e) }
+            onDragEnd={ e => this.onDragEnd(e) }
+            onDragOver={ e => this.onDragOver(e) }
+            onDrop={ e => this.onDrop( e, templateObj ) }
+        >
           <div className={s.textWrapper}>
             <h2>{headerTemplate}</h2>
             <p dangerouslySetInnerHTML={{__html: divText}}></p>
