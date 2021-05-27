@@ -27,11 +27,12 @@ export default class AddTemplateModal extends React.Component {
     const editObj = this.props.editInfo
 
     if ( editObj.active === true ) {
-      const { divText, headerTemplate, id, insertMarkIndex} = editObj.templateObj
+      const { divText, headerTemplate, id, insertMarkIndex, order} = editObj.templateObj
       this.setState({
         divText: divText,
         headerTemplate: headerTemplate,
-        headerTouched: true
+        headerTouched: true,
+        order: order
       })
     }
   }
@@ -123,14 +124,16 @@ export default class AddTemplateModal extends React.Component {
         insertMarkIndex: this.state.insertMarkIndex, 
         headerTemplate: this.state.headerTemplate,
         simpleText: this.state.simpleText,
-        id: this.props.editInfo.templateObj.id })
+        id: this.props.editInfo.templateObj.id,
+        order: this.state.order })
     }
     const state = {
       divText: this.state.divText, 
       insertMarkIndex: this.state.insertMarkIndex, 
       headerTemplate: this.state.headerTemplate,
       simpleText: this.state.simpleText,
-      id: new Date().getTime() 
+      id: new Date().getTime(),
+      order: this.props.lastOrderIndex
     }
     this.props.saveTemplate('create', state)
   }

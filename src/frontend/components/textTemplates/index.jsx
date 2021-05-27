@@ -122,7 +122,7 @@ class Templates extends React.Component {
 
     this.setState(() => {
 
-      
+
       setTimeout(() => {
         // console.log('this.state', this.state)
       }, 1000)
@@ -148,15 +148,41 @@ class Templates extends React.Component {
     return clipboardText.slice(0, idx) + str + clipboardText.slice(idx + Math.abs(rem))
   }
 
-  componentDidMount() {
-    ipcRenderer.invoke('templateControls', ['load']).then((response) => {
-      // console.log('from DB on front ', response )
-      if ( !response || (response.length && response.length === 0 )) { return }
+  componentDidMount = async () => {
+    await new Promise((rs,rj) => {
 
-      this.setState((state, props) => {
-        return response
+      ipcRenderer.invoke('templateControls', ['load']).then((response) => {
+        // console.log('from DB on front ', response )
+        if ( !response || (response.length && response.length === 0 )) { rs(); return }
+
+        this.setState((state, props) => {
+          rs(); return response
+        })
       })
     })
+
+    const setOrdersToTemplates = () => {
+      this.setState(state => {
+        const currentTemplates = state.templates
+        let orderedTemplates;
+        // console.log('state.templates', state.templates)
+
+        const notOrderedItemExists = currentTemplates.find(template => {
+          // console.log('template.order', template.order)
+          return template.order === undefined
+        })
+
+        if ( notOrderedItemExists ) {
+          // console.log('no order')
+          orderedTemplates = currentTemplates.map( (template, i) => {
+            // console.log({ ...template, order: i })
+            return { ...template, order: i }
+          })
+          return { templates: orderedTemplates}
+        }
+      })
+    }
+    setOrdersToTemplates()
   }
 
   componentDidUpdate() {
@@ -178,8 +204,54 @@ class Templates extends React.Component {
       ipcRenderer.invoke('templateControls', ['set', this.state]).then((response) => {
         // console.log('on front - ', response)
       })
-      console.log('this.state.lastCopiedContent', this.state.lastCopiedContent)
+      // console.log('this.state.lastCopiedContent', this.state.lastCopiedContent)
   }
+
+  highlightCard = (card) => {
+    const cardId = card?.attributes?.listid?.value
+    //if ( !cardId ) return
+
+    this.setState(state => {
+      const newState = state.templates.map( template => {
+
+        if ( cardId && template.id == cardId ) return { ...template, highlighted: true }
+        return { ...template, highlighted: false }
+      })
+      // console.log(this.state.templates)
+      return { templates: newState }
+    })
+  }
+
+  changeCardsOrder = (isDragged, draggedOn) => {
+    // console.log('isDragged', isDragged, 'draggedOn', draggedOn)
+    this.setState(state => {
+      const currentTemplates = state.templates
+
+      const stateIsDragged = currentTemplates.find( t => {
+        return t.id == isDragged.id
+      })
+
+      const stateDraggedOn = currentTemplates.find( t => {
+        return t.id == draggedOn.id
+      })
+
+      if ( !stateIsDragged || !stateDraggedOn ) return
+
+      const newTemplatesOrder = currentTemplates.map( template => {
+        // console.log(template.id, stateDraggedOn.id, stateIsDragged.id)
+        if ( template.id ===  stateDraggedOn.id ) {
+          return { ...template, order: stateIsDragged.order}
+        }
+        if ( template.id ===  stateIsDragged.id ) {
+          return { ...template, order: stateDraggedOn.order}
+        }
+        return template
+      })
+      return { templates: newTemplatesOrder }
+    })
+  }
+
+
 
   render = () => {
     return (
@@ -191,6 +263,8 @@ class Templates extends React.Component {
           useTemplate={this.useTemplate}
           editTemplate={this.editTemplate}
           useAnimation={this.state.useAnimation}
+          highlightCard={this.highlightCard}
+          changeCardsOrder={this.changeCardsOrder}
         />
 
         { this.state.modalIsVisible ?
@@ -200,7 +274,8 @@ class Templates extends React.Component {
             saveTemplate={this.saveTemplate}
             lastCommonHeaderName={lastCommonHeaderName}
             editInfo={this.state.editMode}
-            editModeOff={this.editModeOff}/>
+            editModeOff={this.editModeOff}
+            lastOrderIndex={this.state.templates?.length ? this.state.templates.length : 0}/>
           : ''
         }
       </div>
