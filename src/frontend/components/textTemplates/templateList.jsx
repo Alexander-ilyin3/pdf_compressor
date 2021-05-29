@@ -68,7 +68,7 @@ export default class TemplateList extends React.Component {
 
   list() {
     const listArray = this.props.templates.sort(this.sortCards).map((templateObj) => {
-      const { divText, headerTemplate, insertMarkIndex, id } = templateObj
+      const { divText, headerTemplate, insertMarkIndex, id, hotkey } = templateObj
       const useActive = this.props.useAnimation.active && this.props.useAnimation.liId == id
       // console.log('props - ', this.props.useAnimation.active, this.props.useAnimation.liId, id)
 
@@ -86,6 +86,7 @@ export default class TemplateList extends React.Component {
         >
           <div className={s.textWrapper}>
             <h2>{headerTemplate}</h2>
+            { hotkey ? <div className={s.hotkeyContainer}>{hotkey}</div> : null }
             <p dangerouslySetInnerHTML={{__html: divText}}></p>
           </div>
             <button className={s.deleteButton} onClick={this.props.deleteTemplate}>X</button>

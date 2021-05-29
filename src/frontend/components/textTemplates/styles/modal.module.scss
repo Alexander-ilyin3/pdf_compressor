@@ -89,3 +89,13 @@ span#mark {
   text-align: center;
   color: $tab-unactive-c;
 }
+
+.hotkeyInput {
+  width: 1.5em;
+  height: 1.4em;
+  padding: 0;
+  position: absolute;
+  top: 18px;
+  left: 100px;
+  text-align: center;
+}

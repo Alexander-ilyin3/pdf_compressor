@@ -27,12 +27,13 @@ export default class AddTemplateModal extends React.Component {
     const editObj = this.props.editInfo
 
     if ( editObj.active === true ) {
-      const { divText, headerTemplate, id, insertMarkIndex, order} = editObj.templateObj
+      const { divText, headerTemplate, id, insertMarkIndex, order, hotkey} = editObj.templateObj
       this.setState({
         divText: divText,
         headerTemplate: headerTemplate,
         headerTouched: true,
-        order: order
+        order: order,
+        hotkey: hotkey
       })
     }
   }
@@ -116,6 +117,16 @@ export default class AddTemplateModal extends React.Component {
     return str.slice(0, index) + value + str.slice(index)
   }
 
+  hotkeyInput = (e) => {
+    const numN = e.target.value
+    e.target.value = ''
+    const numArray = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '']
+    
+    if ( !numArray.includes(numN) ) return
+
+    this.setState({hotkey: numN})
+  }
+
   sendState = () => {
     if ( this.props?.editInfo?.active ) {
       // console.log('this.props.editInfo', this.props.editInfo)
@@ -125,7 +136,8 @@ export default class AddTemplateModal extends React.Component {
         headerTemplate: this.state.headerTemplate,
         simpleText: this.state.simpleText,
         id: this.props.editInfo.templateObj.id,
-        order: this.state.order })
+        order: this.state.order,
+        hotkey: this.state.hotkey })
     }
     const state = {
       divText: this.state.divText, 
@@ -133,7 +145,8 @@ export default class AddTemplateModal extends React.Component {
       headerTemplate: this.state.headerTemplate,
       simpleText: this.state.simpleText,
       id: new Date().getTime(),
-      order: this.props.lastOrderIndex
+      order: this.props.lastOrderIndex,
+      hotkey: this.state.hotkey
     }
     this.props.saveTemplate('create', state)
   }
@@ -150,6 +163,11 @@ export default class AddTemplateModal extends React.Component {
             onClick={this.toggleMarkMode}>
             <span>Mark</span>
           </button>
+          <input
+            className={s.hotkeyInput}
+            onInput={this.hotkeyInput}
+            value={this.state.hotkey}
+          />
           <button className={`${s.topButtons} ${s.closeButton}`} onClick={this.props.closeModal}><span>X</span></button>
           <input className={s.templateHeader} onChange={this.headerTemplateChange} value={ this.state.headerTemplate } onClick={this.headerTouched}></input>
           <div 

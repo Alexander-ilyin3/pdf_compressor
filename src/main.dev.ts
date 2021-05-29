@@ -125,7 +125,12 @@ app.on('window-all-closed', () => {
   }
 });
 
-app.whenReady().then(createWindow).catch(console.log);
+app.whenReady()
+  .then(createWindow)
+  .then( _ => {
+    initHandlers(ipcMain)
+  })
+  .catch(console.log);
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
@@ -135,6 +140,6 @@ app.on('activate', () => {
 
 const { ipcMain } = require('electron')
 
-initHandlers(ipcMain)
+
 
 

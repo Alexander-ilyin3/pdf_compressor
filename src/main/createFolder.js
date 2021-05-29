@@ -6,17 +6,17 @@ module.exports = () => {
     processedPicturesFolder()
 
     function processedPicturesFolder() {
-      if ( fs.readdirSync('./').filter((item) => { return item === 'PROCESSED_PICTURES' }).length ) {
+      if ( fs.readdirSync('../').filter((item) => { return item === 'PROCESSED_PICTURES' }).length ) {
         return
       }
-      fs.mkdirSync('PROCESSED_PICTURES')
+      fs.mkdirSync('../PROCESSED_PICTURES')
     }
 
     function nedbFolder() {
-      if ( fs.readdirSync('./').filter((item) => { return item === 'NEDB' }).length ) {
+      if ( fs.readdirSync('../').filter((item) => { return item === 'NEDB' }).length ) {
         return
       }
-      fs.mkdirSync('NEDB')
+      fs.mkdirSync('../NEDB')
     }
   } catch(e) {
     console.log(e)
